@@ -50,6 +50,7 @@
     "lint": "eslint ./src ./test",
     "lint-fix": "eslint ./src ./test --fix",
     "mocha": "mocha test --timeout 50000 --bail --require esm",
+    "publish": "npm publish --access public",
     "test": "npm run mocha"
   },
   "husky": {
