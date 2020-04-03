@@ -1,4 +1,4 @@
-const Wallet = require('../src/wallet').default
+const Wallet = require('../src/index').default
 const chai = require('chai')
 const mocha = require('mocha')
 const describe = mocha.describe

@@ -1,9 +1,8 @@
-import Zenroom from '@lorena-ssi/zenroom-lib'
-import { promises as fsPromises } from 'fs'
-
-import log from 'debug'
+const Zenroom = require('@lorena-ssi/zenroom-lib')
+const fsPromises = require('fs').promises
 const os = require('os')
 const home = os.homedir()
+const log = require('debug')
 const debug = log('did:debug:wallet-fs')
 debug.enabled = true
 
