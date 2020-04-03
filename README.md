@@ -1,18 +1,18 @@
-## Lorena Filesystem Wallet
+## Lorena Wallet Library
 
-A simple POSIX filesystem-based wallet implementation useful for console applications and tests.
+Default implementation has simple POSIX filesystem-based storage useful for console applications and tests, can be overriden with different storage methods.
 
 ```
-npm install @lorena-ssi/wallet-fs
+npm install @lorena-ssi/wallet-lib
 ```
 
-[![Build Status](https://travis-ci.com/lorena-ssi/wallet-fs.svg?branch=master)](https://travis-ci.com/lorena-ssi/wallet-fs)
-[![Coverage Status](https://coveralls.io/repos/github/lorena-ssi/wallet-fs/badge.svg?branch=master)](https://coveralls.io/github/lorena-ssi/wallet-fs?branch=master)
+[![Build Status](https://travis-ci.com/lorena-ssi/wallet-lib.svg?branch=master)](https://travis-ci.com/lorena-ssi/wallet-lib)
+[![Coverage Status](https://coveralls.io/repos/github/lorena-ssi/wallet-lib/badge.svg?branch=master)](https://coveralls.io/github/lorena-ssi/wallet-lib?branch=master)
 
 ## Usage
 
 ``` js
-const Wallet = require('@lorena-ssi/wallet-fs').default
+const Wallet = require('@lorena-ssi/wallet-lib').default
 ```
 
 ## License

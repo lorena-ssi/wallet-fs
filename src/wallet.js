@@ -6,6 +6,7 @@ const os = require('os')
 const home = os.homedir()
 const debug = log('did:debug:wallet-fs')
 debug.enabled = true
+
 export default class Wallet {
   constructor (username) {
     this.directoryPath = `${home}/.lorena/wallets/${username}`

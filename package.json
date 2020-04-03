@@ -1,5 +1,5 @@
 {
-  "name": "@lorena-ssi/wallet-fs",
+  "name": "@lorena-ssi/wallet-lib",
   "version": "1.0.0",
   "description": "Lorena Posix Filesystem-based Wallet",
   "author": "Alex Puig <alex@caelumlabs.com>",
@@ -8,7 +8,7 @@
   "module": "src/wallet.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lorena-ssi/wallet-fs.git"
+    "url": "git+https://github.com/lorena-ssi/wallet-lib.git"
   },
   "keywords": [
     "npm",
@@ -17,9 +17,9 @@
     "javascript"
   ],
   "bugs": {
-    "url": "https://github.com/lorena-ssi/wallet-fs/issues"
+    "url": "https://github.com/lorena-ssi/wallet-lib/issues"
   },
-  "homepage": "https://github.com/lorena-ssi/wallet-fs#readme",
+  "homepage": "https://github.com/lorena-ssi/wallet-lib#readme",
   "dependencies": {
     "@lorena-ssi/zenroom-lib": "^1.4.7",
     "debug": "^4.1.1",
