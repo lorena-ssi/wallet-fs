@@ -23,6 +23,11 @@ describe('Wallet API', function () {
     expect(w.data.credentials[1]).to.eql({ name: 'test1', role: 'user' })
   })
 
+  it('should get the credential', () => {
+    const cred = w.get('credentials', { name: 'admintest' })
+    expect(cred).to.eql({ name: 'admintest', role: 'admin' })
+  })
+
   it('should update the credential', () => {
     w.update('credentials', { name: 'admintest' }, { name: 'admintest', role: 'superadmin' })
     expect(w.data.credentials[0]).to.eql({ name: 'admintest', role: 'superadmin' })

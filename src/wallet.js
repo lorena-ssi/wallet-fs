@@ -79,6 +79,19 @@ export default class Wallet {
     this.changed = false
   }
 
+  get (collection, where) {
+    let result = false
+    this.data[collection].filter((item, index) => {
+      Object.entries(where).forEach((searchTerm) => {
+        if (item[searchTerm[0]] === searchTerm[1]) {
+          console.log(item[searchTerm[0]])
+          result = this.data[collection][index]
+        }
+      })
+    })
+    return result
+  }
+
   add (collection, value) {
     this.changed = true
     if (typeof collection !== 'string') throw new Error('Collection should be a String')
