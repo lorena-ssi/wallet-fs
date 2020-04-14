@@ -1,6 +1,6 @@
 {
   "name": "@lorena-ssi/wallet-lib",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Lorena Posix Filesystem-based Wallet",
   "author": "Alex Puig <alex@caelumlabs.com>",
   "license": "MIT",
@@ -50,6 +50,7 @@
     "lint": "eslint ./src ./test",
     "lint-fix": "eslint ./src ./test --fix",
     "mocha": "mocha test --timeout 50000 --bail --require esm",
+    "publish": "npm publish --access public",
     "test": "npm run mocha"
   },
   "husky": {

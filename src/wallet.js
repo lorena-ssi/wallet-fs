@@ -84,7 +84,6 @@ export default class Wallet {
     this.data[collection].filter((item, index) => {
       Object.entries(where).forEach((searchTerm) => {
         if (item[searchTerm[0]] === searchTerm[1]) {
-          console.log(item[searchTerm[0]])
           result = this.data[collection][index]
         }
       })
