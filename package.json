@@ -1,6 +1,6 @@
 {
   "name": "@lorena-ssi/wallet-lib",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Lorena Posix Filesystem-based Wallet",
   "author": "Alex Puig <alex@caelumlabs.com>",
   "license": "MIT",
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/lorena-ssi/wallet-lib#readme",
   "dependencies": {
-    "@lorena-ssi/zenroom-lib": "^1.4.9",
+    "@lorena-ssi/zenroom-lib": "^1.5.0",
     "debug": "^4.1.1",
     "esm": "^3.2.25"
   },

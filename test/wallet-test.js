@@ -1,9 +1,23 @@
 import Wallet from '../src'
-import { expect } from 'chai'
+import { expect, assert } from 'chai'
 import { describe, it } from 'mocha'
+import { promises as fsPromises } from 'fs'
 
+const storage = 'mem'
+
+const deleteWallet = async (w, path) => {
+  if (storage === 'fs') {
+    fsPromises.rmdir(path, {
+      recursive: true
+    }).then(() => {
+      return true
+    })
+  } else if (storage === 'mem') {
+    w.storage = {}
+  }
+}
 describe('Wallet API', function () {
-  const w = new Wallet('wallet')
+  const w = new Wallet('testwallet', { storage })
   it('should create Wallet class', () => {
     expect(w.info.matrixUser).to.equal('')
   })
@@ -49,19 +63,53 @@ describe('Wallet API', function () {
     expect(w.data.credentials.length).to.equal(1)
   })
 
-  xit('should unlock wallet', () => {
-    // ...
+  it("should NOT unlock wallet (because doesn't exist)", (done) => {
+    deleteWallet(w, w.directoryPath, {
+      recursive: true
+    }).then(() => {
+      w.unlock('mypassword').then((response) => {
+        assert(!response)
+        done()
+      })
+    })
   })
 
-  xit('should lock wallet', () => {
-    // ...
+  it("should lock wallet (because doesn't exist)", (done) => {
+    deleteWallet(w, w.directoryPath, {
+      recursive: true
+    }).then(() => {
+      w.lock('mypassword').then((response) => {
+        assert(response)
+        done()
+      })
+    })
   })
 
-  xit('should write to wallet', () => {
-    // ...
+  it('should lock existing wallet with correct password', (done) => {
+    w.lock('mypassword').then((response) => {
+      assert(response)
+      done()
+    })
   })
 
-  xit('should read from wallet', () => {
-    // ...
+  it('should NOT lock existing wallet with incorrect password', (done) => {
+    w.unlock('mypassword1').then((response) => {
+      assert(!response)
+      done()
+    })
+  })
+
+  it('should NOT unlock existing wallet with incorrect password', (done) => {
+    w.unlock('mypassword1').then((response) => {
+      assert(!response)
+      done()
+    })
+  })
+
+  it('should unlock wallet', (done) => {
+    w.unlock('mypassword').then((response) => {
+      assert(response)
+      done()
+    })
   })
 })
