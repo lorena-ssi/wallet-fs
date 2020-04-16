@@ -50,7 +50,7 @@
     "coverage:serve": "npm run coverage && serve coverage",
     "debug": "./pds 1",
     "lint": "eslint ./src ./test",
-    "lint-fix": "eslint ./src ./test --fix",
+    "lint:fix": "eslint ./src ./test --fix",
     "mocha": "mocha test --timeout 50000 --require esm",
     "publish": "npm publish --access public",
     "test": "npm run mocha"
