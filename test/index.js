@@ -1,10 +1,6 @@
-const Wallet = require('../src/index').default
-const chai = require('chai')
-const mocha = require('mocha')
-const describe = mocha.describe
-const it = mocha.it
-// Configure chai
-const expect = chai.expect
+import Wallet from '../src'
+import { expect } from 'chai'
+import { describe, it } from 'mocha'
 
 describe('Wallet API', function () {
   const w = new Wallet('wallet')
