@@ -41,11 +41,13 @@
     "husky": "^4.2.5",
     "mocha": "^7.1.1",
     "mocha-lcov-reporter": "^1.3.0",
-    "nyc": "^15.0.1"
+    "nyc": "^15.0.1",
+    "serve": "^11.3.0"
   },
   "scripts": {
-    "coverage": "nyc npm run mocha  && nyc --require esm report --reporter=html",
+    "coverage": "nyc --reporter=text --reporter=html npm run mocha",
     "coveralls": "nyc npm run mocha && nyc report --reporter=text | coveralls",
+    "coverage:serve": "npm run coverage && serve coverage",
     "debug": "./pds 1",
     "lint": "eslint ./src ./test",
     "lint-fix": "eslint ./src ./test --fix",
