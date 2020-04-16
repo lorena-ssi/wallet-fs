@@ -4,8 +4,8 @@
   "description": "Lorena Posix Filesystem-based Wallet",
   "author": "Alex Puig <alex@caelumlabs.com>",
   "license": "MIT",
-  "main": "src/index.js",
-  "module": "src/wallet.js",
+  "main": "index.js",
+  "module": "src/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lorena-ssi/wallet-lib.git"
@@ -44,12 +44,12 @@
     "nyc": "^15.0.1"
   },
   "scripts": {
-    "coverage": "nyc npm run mocha && nyc report --reporter=html",
-    "coveralls": "nyc npm run mocha && nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc npm run mocha  && nyc --require esm report --reporter=html",
+    "coveralls": "nyc npm run mocha && nyc report --reporter=text | coveralls",
     "debug": "./pds 1",
     "lint": "eslint ./src ./test",
     "lint-fix": "eslint ./src ./test --fix",
-    "mocha": "mocha test --timeout 50000 --bail --require esm",
+    "mocha": "mocha test --timeout 50000 --require esm",
     "publish": "npm publish --access public",
     "test": "npm run mocha"
   },

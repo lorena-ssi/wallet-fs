@@ -1,4 +1,4 @@
-import Wallet from '../src/wallet'
+import Wallet from '../src'
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 
