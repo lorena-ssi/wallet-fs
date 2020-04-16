@@ -8,6 +8,7 @@ debug.enabled = true
 
 export default class Wallet {
   constructor (username) {
+    this.name = username
     this.directoryPath = `${home}/.lorena/wallets/${username}`
     this.zenroom = new Zenroom(true)
     this.changed = false
