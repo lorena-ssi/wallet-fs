@@ -6,7 +6,11 @@ const debug = log('did:debug:wallet-fs')
 debug.enabled = true
 
 export default class Wallet {
-  constructor (username) {
+  constructor (username, opts = { storage: 'fs' }) {
+    this.opts = opts
+    if (opts.storage === 'mem') {
+      this.storage = {}
+    }
     this.name = username
     this.directoryPath = `${home()}/.lorena/wallets/${username}`
     this.zenroom = new Zenroom(true)
@@ -26,23 +30,45 @@ export default class Wallet {
     }
   }
 
+  async exist () {
+    if (this.opts.storage === 'fs') {
+      const result = await fsPromises.stat(this.directoryPath).catch(() => {
+        return false
+      })
+      return !result ? result : result.isDirectory()
+    } else if (this.opts.storage === 'mem') {
+      return !!this.storage[this.directoryPath]
+    }
+  }
+
   async read (source) {
-    try {
-      // debug('Reading', `${this.directoryPath}/${source}`)
-      const data = await fsPromises.readFile(`${this.directoryPath}/${source}`, 'utf-8')
-      return data
-    } catch (error) {
-      throw new Error(error)
+    if (this.opts.storage === 'fs') {
+      try {
+        const data = await fsPromises.readFile(`${this.directoryPath}/${source}`, 'utf-8')
+        return data
+      } catch (error) {
+        throw new Error(error)
+      }
+    } else if (this.opts.storage === 'mem') {
+      return this.storage[this.directoryPath][source]
     }
   }
 
   async write (source, data) {
-    try {
-      await fsPromises.mkdir(this.directoryPath, { recursive: true })
-      await fsPromises.writeFile(`${this.directoryPath}/${source}`, data)
+    if (this.opts.storage === 'fs') {
+      try {
+        await fsPromises.mkdir(this.directoryPath, { recursive: true })
+        await fsPromises.writeFile(`${this.directoryPath}/${source}`, data)
+        return true
+      } catch (error) {
+        return false
+      }
+    } else if (this.opts.storage === 'mem') {
+      if (!this.storage[this.directoryPath]) {
+        this.storage[this.directoryPath] = {}
+      }
+      this.storage[this.directoryPath][source] = data
       return true
-    } catch (error) {
-      return false
     }
   }
 
@@ -72,11 +98,23 @@ export default class Wallet {
    * @param {string} password Password to encrypt configuration
    */
   async lock (password) {
-    const infoEncrypted = await this.zenroom.encryptSymmetric(password, JSON.stringify(this.info), 'Wallet info')
-    await this.write('info', Buffer.from(JSON.stringify(infoEncrypted)).toString('base64'))
-    const dataEncrypted = await this.zenroom.encryptSymmetric(password, JSON.stringify(this.data), 'Wallet data')
-    await this.write('data', Buffer.from(JSON.stringify(dataEncrypted)).toString('base64'))
-    this.changed = false
+    try {
+      if (await this.exist()) {
+        if (!await this.unlock(password)) {
+          console.log('unlocked exist')
+          return false
+        }
+      }
+      const infoEncrypted = await this.zenroom.encryptSymmetric(password, JSON.stringify(this.info), 'Wallet info')
+      await this.write('info', Buffer.from(JSON.stringify(infoEncrypted)).toString('base64'))
+      const dataEncrypted = await this.zenroom.encryptSymmetric(password, JSON.stringify(this.data), 'Wallet data')
+      await this.write('data', Buffer.from(JSON.stringify(dataEncrypted)).toString('base64'))
+      this.changed = false
+      return true
+    } catch (_e) {
+      console.log('LOCK ERROR', _e)
+      return false
+    }
   }
 
   get (collection, where) {
