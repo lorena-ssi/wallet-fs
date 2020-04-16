@@ -46,7 +46,7 @@
   },
   "scripts": {
     "coverage": "nyc --reporter=text --reporter=html npm run mocha",
-    "coveralls": "nyc npm run mocha && nyc report --reporter=text | coveralls",
+    "coveralls": "nyc npm run mocha && nyc report --reporter=text-lcov | coveralls",
     "coverage:serve": "npm run coverage && serve coverage",
     "debug": "./pds 1",
     "lint": "eslint ./src ./test",
