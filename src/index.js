@@ -101,7 +101,6 @@ export default class Wallet {
     try {
       if (await this.exist()) {
         if (!await this.unlock(password)) {
-          console.log('unlocked exist')
           return false
         }
       }
@@ -112,7 +111,6 @@ export default class Wallet {
       this.changed = false
       return true
     } catch (_e) {
-      console.log('LOCK ERROR', _e)
       return false
     }
   }
