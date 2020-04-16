@@ -15,14 +15,14 @@ export default class Wallet {
     this.info = {
       matrixUser: '',
       matrixPass: '',
-      did: '',
-      roomId: '',
-      keyPair: {}
+      keyPair: {},
+      person: {}
     }
     // data
     this.data = {
       credentials: [],
-      contacts: []
+      links: [],
+      tasks: []
     }
   }
 
