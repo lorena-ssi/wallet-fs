@@ -1,4 +1,4 @@
-import Wallet from '../src'
+import Wallet from '../index.js'
 import { expect, assert } from 'chai'
 import { describe, it } from 'mocha'
 import { promises as fsPromises } from 'fs'
@@ -18,7 +18,7 @@ const deleteWallet = async (w, path) => {
 }
 
 describe('Wallet API', function () {
-  const w = new Wallet('testWallet', { storage })
+  const w = new Wallet('testWallet', { storage, silent: true })
   it('should create Wallet class', () => {
     expect(w.info.matrixUser).to.equal('')
   })
