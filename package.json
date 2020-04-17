@@ -1,6 +1,6 @@
 {
   "name": "@lorena-ssi/wallet-lib",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Lorena Posix Filesystem-based Wallet",
   "author": "Alex Puig <alex@caelumlabs.com>",
   "license": "MIT",
