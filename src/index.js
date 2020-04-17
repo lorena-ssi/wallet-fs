@@ -73,8 +73,10 @@ export default class Wallet {
   }
 
   /**
+   * Unlock the wallet by decrypting with the supplied password
    *
    * @param {string} password Pass
+   * @returns {boolean} whether the password worked
    */
   async unlock (password) {
     try {
