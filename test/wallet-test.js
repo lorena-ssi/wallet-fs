@@ -16,8 +16,9 @@ const deleteWallet = async (w, path) => {
     w.storage = {}
   }
 }
+
 describe('Wallet API', function () {
-  const w = new Wallet('testwallet', { storage })
+  const w = new Wallet('testWallet', { storage })
   it('should create Wallet class', () => {
     expect(w.info.matrixUser).to.equal('')
   })
@@ -67,7 +68,7 @@ describe('Wallet API', function () {
     deleteWallet(w, w.directoryPath, {
       recursive: true
     }).then(() => {
-      w.unlock('mypassword').then((response) => {
+      w.unlock('myPassword').then((response) => {
         assert(!response)
         done()
       })
@@ -78,7 +79,7 @@ describe('Wallet API', function () {
     deleteWallet(w, w.directoryPath, {
       recursive: true
     }).then(() => {
-      w.lock('mypassword').then((response) => {
+      w.lock('myPassword').then((response) => {
         assert(response)
         done()
       })
@@ -86,28 +87,28 @@ describe('Wallet API', function () {
   })
 
   it('should lock existing wallet with correct password', (done) => {
-    w.lock('mypassword').then((response) => {
+    w.lock('myPassword').then((response) => {
       assert(response)
       done()
     })
   })
 
-  it('should NOT lock existing wallet with incorrect password', (done) => {
-    w.unlock('mypassword1').then((response) => {
+  it('should NOT unlock existing wallet with incorrect password', (done) => {
+    w.unlock('myPassword1').then((response) => {
       assert(!response)
       done()
     })
   })
 
   it('should NOT unlock existing wallet with incorrect password', (done) => {
-    w.unlock('mypassword1').then((response) => {
+    w.unlock('myPassword1').then((response) => {
       assert(!response)
       done()
     })
   })
 
   it('should unlock wallet', (done) => {
-    w.unlock('mypassword').then((response) => {
+    w.unlock('myPassword').then((response) => {
       assert(response)
       done()
     })
