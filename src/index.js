@@ -76,16 +76,19 @@ export default class Wallet {
    * Unlock the wallet by decrypting with the supplied password
    *
    * @param {string} password Pass
+   * @param {boolean} onlycheck Only check if can unlock the files
    * @returns {boolean} whether the password worked
    */
-  async unlock (password) {
+  async unlock (password, onlycheck = false) {
     try {
       const info = await this.read('info')
       const infoDecrypted = await this.zenroom.decryptSymmetric(password, JSON.parse(Buffer.from(info, 'base64').toString()))
-      this.info = JSON.parse(infoDecrypted.message)
       const data = await this.read('data')
       const dataDecrypted = await this.zenroom.decryptSymmetric(password, JSON.parse(Buffer.from(data, 'base64').toString()))
-      this.data = JSON.parse(dataDecrypted.message)
+      if (!onlycheck) {
+        this.info = JSON.parse(infoDecrypted.message)
+        this.data = JSON.parse(dataDecrypted.message)
+      }
       // debug('Info %O', this.info)
       // debug('Data %O', this.data)
       return true
@@ -102,7 +105,7 @@ export default class Wallet {
   async lock (password) {
     try {
       if (await this.exist()) {
-        if (!await this.unlock(password)) {
+        if (!await this.unlock(password, true)) {
           return false
         }
       }
