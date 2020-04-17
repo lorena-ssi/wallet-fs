@@ -113,4 +113,21 @@ describe('Wallet API', function () {
       done()
     })
   })
+
+  it('should lock and unlock a wallet in fs', (done) => {
+    let w2
+    const w1 = new Wallet('testWallet', { storage: 'fs', silent: true })
+    w1.add('credentials', { name: 'admintest', role: 'admin' })
+    expect(w1.data.credentials[0]).to.eql({ name: 'admintest', role: 'admin' })
+    w1.lock('myPassword')
+      .then((response) => {
+        assert(response)
+        w2 = new Wallet('testWallet', { storage: 'fs', silent: true })
+        return w2.unlock('myPassword')
+      })
+      .then((response) => {
+        expect(w2.data.credentials[0]).to.eql({ name: 'admintest', role: 'admin' })
+        done()
+      })
+  })
 })
