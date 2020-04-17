@@ -6,14 +6,14 @@ const debug = log('did:debug:wallet-fs')
 debug.enabled = true
 
 export default class Wallet {
-  constructor (username, opts = { storage: 'fs' }) {
+  constructor (username, opts = { storage: 'fs', silent: true }) {
     this.opts = opts
     if (opts.storage === 'mem') {
       this.storage = {}
     }
     this.name = username
     this.directoryPath = `${home()}/.lorena/wallets/${username}`
-    this.zenroom = new Zenroom(true)
+    this.zenroom = new Zenroom(this.opts.silent)
     this.changed = false
     // info
     this.info = {
