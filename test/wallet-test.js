@@ -1,17 +1,12 @@
 import Wallet from '../index.js'
 import { expect, assert } from 'chai'
 import { describe, it } from 'mocha'
-import { promises as fsPromises } from 'fs'
-
-const storage = 'mem'
+import fs from 'fs-extra'
+const storage = 'fs'
 
 const deleteWallet = async (w, path) => {
   if (storage === 'fs') {
-    fsPromises.rmdir(path, {
-      recursive: true
-    }).then(() => {
-      return true
-    })
+    fs.removeSync(path)
   } else if (storage === 'mem') {
     w.storage = {}
   }
@@ -21,6 +16,10 @@ describe('Wallet API', function () {
   const w = new Wallet('testWallet', { storage, silent: true })
   it('should create Wallet class', () => {
     expect(w.info.matrixUser).to.equal('')
+  })
+
+  it('should delete the wallet (if any remaining from the last test)', async () => {
+    await deleteWallet(w, w.directoryPath)
   })
 
   it('should add to credentials collection', () => {
@@ -44,6 +43,17 @@ describe('Wallet API', function () {
     expect(w.data.credentials[0]).to.eql({ name: 'admintest', role: 'superadmin' })
   })
 
+  it('should save the wallet (lock)', async () => {
+    await w.lock('myPassword0')
+    expect(w.data.credentials[0]).to.eql({ name: 'admintest', role: 'superadmin' })
+  })
+
+  it('should load the wallet (unlock)', async () => {
+    const w2 = new Wallet('testWallet', { storage, silent: true })
+    await w2.unlock('myPassword0')
+    expect(w2.data.credentials[0]).to.eql({ name: 'admintest', role: 'superadmin' })
+  })
+
   it('should remove the credential', () => {
     const name = 'test3'
     w.remove('credentials', { name })
@@ -64,22 +74,22 @@ describe('Wallet API', function () {
     expect(w.data.credentials.length).to.equal(1)
   })
 
-  it("should NOT unlock wallet (because doesn't exist)", (done) => {
-    deleteWallet(w, w.directoryPath, {
-      recursive: true
-    }).then(() => {
-      w.unlock('myPassword').then((response) => {
+  it('should remove all coincidences', async () => {
+    await w.lock('password0')
+  })
+
+  it('should NOT unlock wallet (because it does not exist)', (done) => {
+    deleteWallet(w, w.directoryPath).then(() => {
+      w.unlock('myPassword0').then((response) => {
         assert(!response)
         done()
       })
     })
   })
 
-  it("should lock wallet (because doesn't exist)", (done) => {
-    deleteWallet(w, w.directoryPath, {
-      recursive: true
-    }).then(() => {
-      w.lock('myPassword').then((response) => {
+  it('should lock new wallet (thus creating it)', (done) => {
+    deleteWallet(w, w.directoryPath).then(() => {
+      w.lock('myPassword1').then((response) => {
         assert(response)
         done()
       })
@@ -87,28 +97,28 @@ describe('Wallet API', function () {
   })
 
   it('should lock existing wallet with correct password', (done) => {
-    w.lock('myPassword').then((response) => {
+    w.lock('myPassword1').then((response) => {
       assert(response)
       done()
     })
   })
 
   it('should NOT unlock existing wallet with incorrect password', (done) => {
-    w.unlock('myPassword1').then((response) => {
+    w.unlock('myPassword2').then((response) => {
       assert(!response)
       done()
     })
   })
 
   it('should NOT unlock existing wallet with incorrect password', (done) => {
-    w.unlock('myPassword1').then((response) => {
+    w.unlock('myPassword2').then((response) => {
       assert(!response)
       done()
     })
   })
 
   it('should unlock wallet', (done) => {
-    w.unlock('myPassword').then((response) => {
+    w.unlock('myPassword1').then((response) => {
       assert(response)
       done()
     })
