@@ -8,7 +8,7 @@
     "html",
     "json"
   ],
-  "exclude": ["**/*/test*", "test/*"],
-  "report-dir": "./coverage/node/"
+  "exclude": ["**/*/test*"],
+  "report-dir": "./coverage/"
 }
 
