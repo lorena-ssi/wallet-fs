@@ -36,6 +36,7 @@ export default class Wallet {
         return false
       })
       return !result ? result : result.isDirectory()
+      /* istanbul ignore else */
     } else if (this.opts.storage === 'mem') {
       return !!this.storage[this.directoryPath]
     }
@@ -61,6 +62,7 @@ export default class Wallet {
         await fsPromises.writeFile(`${this.directoryPath}/${source}`, data)
         return true
       } catch (error) {
+        /* istanbul ignore next */
         return false
       }
     } else if (this.opts.storage === 'mem') {
@@ -104,11 +106,15 @@ export default class Wallet {
    */
   async lock (password) {
     try {
+      // if it already exists, unlock it.
       if (await this.exist()) {
         if (!await this.unlock(password, true)) {
           return false
         }
       }
+
+      // Otherwise, we're creating it for the first time.
+
       const infoEncrypted = await this.zenroom.encryptSymmetric(password, JSON.stringify(this.info), 'Wallet info')
       await this.write('info', Buffer.from(JSON.stringify(infoEncrypted)).toString('base64'))
       const dataEncrypted = await this.zenroom.encryptSymmetric(password, JSON.stringify(this.data), 'Wallet data')
@@ -116,6 +122,7 @@ export default class Wallet {
       this.changed = false
       return true
     } catch (_e) {
+      /* istanbul ignore next */
       return false
     }
   }
@@ -134,16 +141,22 @@ export default class Wallet {
 
   add (collection, value) {
     this.changed = true
+    /* istanbul ignore if */
     if (typeof collection !== 'string') throw new Error('Collection should be a String')
+    /* istanbul ignore if */
     if (typeof value !== 'object') throw new Error('Value should be an Object')
+    /* istanbul ignore if */
     if (!this.data[collection]) this.data[collection] = []
     this.data[collection].push(value)
   }
 
   update (collection, where, value) {
     this.changed = true
+    /* istanbul ignore if */
     if (typeof collection !== 'string') throw new Error('Collection should be a String')
+    /* istanbul ignore if */
     if (typeof where !== 'object') throw new Error('Value should be an Object')
+    /* istanbul ignore if */
     if (typeof value !== 'object') throw new Error('Value should be an Object')
     const found = this.data[collection].filter((item, index) => {
       let founded

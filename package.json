@@ -46,7 +46,7 @@
     "serve": "^11.3.0"
   },
   "scripts": {
-    "coverage": "nyc --reporter=text --reporter=html npm run mocha",
+    "coverage": "nyc --reporter=text --reporter=html --reporter=lcov npm run mocha",
     "coveralls": "nyc npm run mocha && nyc report --reporter=text-lcov | coveralls",
     "coverage:serve": "npm run coverage && serve coverage",
     "debug": "./pds 1",
