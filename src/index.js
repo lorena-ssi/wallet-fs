@@ -36,7 +36,6 @@ export default class Wallet {
         return false
       })
       return !result ? result : result.isDirectory()
-      /* istanbul ignore else */
     } else if (this.opts.storage === 'mem') {
       return !!this.storage[this.directoryPath]
     }
@@ -87,6 +86,9 @@ export default class Wallet {
       const infoDecrypted = await this.zenroom.decryptSymmetric(password, JSON.parse(Buffer.from(info, 'base64').toString()))
       const data = await this.read('data')
       const dataDecrypted = await this.zenroom.decryptSymmetric(password, JSON.parse(Buffer.from(data, 'base64').toString()))
+      if (!infoDecrypted || !dataDecrypted) {
+        return false
+      }
       if (!onlyCheck) {
         this.info = JSON.parse(infoDecrypted.message)
         this.data = JSON.parse(dataDecrypted.message)
@@ -102,7 +104,7 @@ export default class Wallet {
   /**
    * Encrypt and save configuration.
    *
-   * @param {string} password Password to encrypt configuration
+   * @param {string} password Password to decrypt configuration
    */
   async lock (password) {
     try {
@@ -122,6 +124,29 @@ export default class Wallet {
       this.changed = false
       return true
     } catch (_e) {
+      /* istanbul ignore next */
+      return false
+    }
+  }
+
+  /**
+   * Delete the wallet.
+   *
+   * @returns {boolean} success
+   */
+  async delete () {
+    try {
+      // if it exists, delete it
+      if (await this.exist()) {
+        if (this.opts.storage === 'fs') {
+          await fsPromises.rmdir(this.directoryPath, { recursive: true })
+        } else if (this.opts.storage === 'mem') {
+          this.storage = {}
+        }
+      }
+      // now it doesn't exist regardless
+      return true
+    } catch (e) {
       /* istanbul ignore next */
       return false
     }

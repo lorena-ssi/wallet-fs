@@ -1,16 +1,6 @@
 import Wallet from '..'
 import { expect, assert } from 'chai'
 import { describe, it } from 'mocha'
-import fs from 'fs-extra'
-
-const deleteWallet = async (w, path) => {
-  if (w.opts.storage === 'fs') {
-    fs.removeSync(path)
-  } else {
-    assert(w.opts.storage === 'mem')
-    w.storage = {}
-  }
-}
 
 describe('Wallet API', function () {
   // run (almost) all tests for each supported storage type
@@ -22,7 +12,7 @@ describe('Wallet API', function () {
     })
 
     it('should delete the wallet (if any remaining from the last test) ' + storage, async () => {
-      await deleteWallet(w, w.directoryPath)
+      await w.delete()
     })
 
     it('should add to credentials collection ' + storage, () => {
@@ -71,12 +61,20 @@ describe('Wallet API', function () {
       expect(w.data.credentials.length).to.equal(1)
     })
 
-    it('should remove all coincidences ' + storage, async () => {
-      await w.lock('password0')
+    it('should lock ' + storage, async () => {
+      await w.lock('myPassword0')
+    })
+
+    it('should not lock with the wrong password ' + storage, async () => {
+      let result = await w.unlock('myPassword0')
+      expect(result).to.be.true
+      w.add('credentials', { name: 'test6', role: 'user' })
+      result = await w.lock('NotMyPasswordX')
+      expect(result).to.be.false
     })
 
     it('should NOT unlock wallet (because it does not exist) ' + storage, (done) => {
-      deleteWallet(w, w.directoryPath).then(() => {
+      w.delete().then(() => {
         w.unlock('myPassword0').then((response) => {
           assert(!response)
           done()
@@ -85,11 +83,9 @@ describe('Wallet API', function () {
     })
 
     it('should lock new wallet (thus creating it) ' + storage, (done) => {
-      deleteWallet(w, w.directoryPath).then(() => {
-        w.lock('myPassword1').then((response) => {
-          assert(response)
-          done()
-        })
+      w.lock('myPassword1').then((response) => {
+        assert(response)
+        done()
       })
     })
 
@@ -120,6 +116,13 @@ describe('Wallet API', function () {
         done()
       })
     })
+
+    it('should delete wallet ' + storage, (done) => {
+      w.delete().then((response) => {
+        assert(response)
+        done()
+      })
+    })
   })
 
   // Scenarios specific to filesystem
@@ -136,6 +139,9 @@ describe('Wallet API', function () {
       })
       .then((response) => {
         expect(w2.data.credentials[0]).to.eql({ name: 'admintest', role: 'admin' })
+        return w2.delete()
+      })
+      .then(() => {
         done()
       })
   })
