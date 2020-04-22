@@ -45,8 +45,8 @@
     "serve": "^11.3.0"
   },
   "scripts": {
-    "coverage": "nyc --reporter=text --reporter=html --reporter=lcov npm run mocha",
-    "coveralls": "nyc npm run mocha && nyc report --reporter=text-lcov | coveralls",
+    "coverage": "rm -rf node_modules/.cache/esm && nyc --reporter=text --reporter=html --reporter=lcov npm run mocha",
+    "coveralls": "rm -rf node_modules/.cache/esm && nyc npm run mocha && nyc report --reporter=text-lcov | coveralls",
     "coverage:serve": "npm run coverage && serve coverage",
     "lint": "eslint ./src ./test",
     "lint:fix": "eslint ./src ./test --fix",
