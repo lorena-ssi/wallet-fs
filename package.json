@@ -1,6 +1,6 @@
 {
   "name": "@lorena-ssi/wallet-lib",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Lorena Wallet",
   "author": "Alex Puig <alex@caelumlabs.com>",
   "license": "MIT",
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/lorena-ssi/wallet-lib#readme",
   "dependencies": {
-    "@lorena-ssi/zenroom-lib": "^1.5.1",
+    "@lorena-ssi/zenroom-lib": "^1.5.2",
     "debug": "^4.1.1",
     "esm": "^3.2.25"
   },
