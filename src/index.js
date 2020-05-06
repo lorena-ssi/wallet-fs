@@ -3,7 +3,6 @@ import { promises as fsPromises } from 'fs'
 import { homedir as home } from 'os'
 import log from 'debug'
 const debug = log('did:debug:wallet-fs')
-debug.enabled = true
 
 export default class Wallet {
   constructor (username, opts = { storage: 'fs', silent: true }) {
@@ -97,6 +96,7 @@ export default class Wallet {
       // debug('Data %O', this.data)
       return true
     } catch (_e) {
+      debug(_e)
       return false
     }
   }
@@ -125,6 +125,8 @@ export default class Wallet {
       return true
     } catch (_e) {
       /* istanbul ignore next */
+      debug(_e)
+      /* istanbul ignore next */
       return false
     }
   }
@@ -147,6 +149,8 @@ export default class Wallet {
       // now it doesn't exist regardless
       return true
     } catch (e) {
+      /* istanbul ignore next */
+      debug(e)
       /* istanbul ignore next */
       return false
     }
