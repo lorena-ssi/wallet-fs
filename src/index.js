@@ -72,6 +72,21 @@ export default class Wallet {
     }
   }
 
+  async toJSON () {
+    try {
+      const data = await this.read('data')
+      const info = await this.read('info')
+      return {
+        [this.name]: {
+          info,
+          data
+        }
+      }
+    } catch (error) {
+      return false
+    }
+  }
+
   /**
    * Unlock the wallet by decrypting with the supplied password
    *

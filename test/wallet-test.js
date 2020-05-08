@@ -123,6 +123,20 @@ describe('Wallet API', function () {
         done()
       })
     })
+
+    it('should return wallet in JSON  ' + storage, (done) => {
+      const w1 = new Wallet('exportWallet', { storage: storage, silent: true })
+      w1.add('credentials', { name: 'admintest', role: 'admin' })
+      expect(w1.data.credentials[0]).to.eql({ name: 'admintest', role: 'admin' })
+      w1.lock('myPassword').then(() => {
+        w1.toJSON().then((json) => {
+          assert(typeof json.exportWallet.info === 'string', 'Should export info')
+          assert(typeof json.exportWallet.data === 'string', 'Should export data')
+          w1.delete()
+          done()
+        })
+      })
+    })
   })
 
   // Scenarios specific to filesystem
